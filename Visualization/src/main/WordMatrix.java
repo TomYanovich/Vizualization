@@ -24,6 +24,7 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
 
 import org.apache.commons.lang3.StringUtils;
 import org.bson.types.ObjectId;
@@ -33,9 +34,9 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 
 public class WordMatrix {
-	
+
 	private static final int NUM_OF_KEYWORDS = 40;
-	
+
 	/*
 	 * rows = dates, columns = words, values = frequencies
 	 */
@@ -172,7 +173,7 @@ public class WordMatrix {
 		List<String> longestEpisodes = new LinkedList<>();
 		Iterator<Entry<String, Integer>> it = sortedEpisodes.iterator();
 		for (int i = 0; i < k; i++) {
-			longestEpisodes.add(it.next().getKey());	
+			longestEpisodes.add(it.next().getKey());
 		}
 		return longestEpisodes;
 	}
@@ -192,7 +193,15 @@ public class WordMatrix {
 			String[] keywordsArr = str.substring(2, str.length() - 1).replace("\"", "").split(" , ");
 
 			keyWordSet = new HashSet<>(Arrays.asList(keywordsArr));
-			keyWordSet.removeIf(p -> StringUtils.isNumericSpace(p));
+			// keyWordSet.removeIf(p -> StringUtils.isNumericSpace(p));
+			Predicate<String> IS_NUMERIC = new Predicate<String>() {
+				@Override
+				public boolean test(String s) {
+					return StringUtils.isNumericSpace(s);
+				}
+			};
+
+			keyWordSet.removeIf(IS_NUMERIC);
 
 			return new WordMatrix(episode_id, start_date, end_date, keyWordSet);
 		}
@@ -230,8 +239,13 @@ public class WordMatrix {
 		int k = Math.min(NUM_OF_KEYWORDS, sortedKeywords.size());
 		bw.write("date\t");
 		for (int i = 0; i < k; i++) {
-			keywordsToK.add(sortedKeywords.first());
-			bw.write(sortedKeywords.pollFirst() + "\t");
+			String key = sortedKeywords.pollFirst();
+			keywordsToK.add(key);
+
+			if (keywordsToK.size() != k)
+				bw.write(key + "\t");
+			else
+				bw.write(key);
 		}
 		bw.newLine();
 

@@ -173,6 +173,9 @@ body {
 	<script src="http://d3js.org/d3.v3.js"></script>
 	<!-- 	d3 visualization -->
 	<script>
+		/* file name */
+		var fileName = "data.tsv";
+		
 		var margin = {
 			top : 20,
 			right : 200,
@@ -253,7 +256,7 @@ body {
 
 		//end slider part----------------------------------------------------------------------------------- 
 
-		d3.tsv("data.tsv", function(error, data) {
+		d3.tsv(fileName, function(error, data) {
 			color.domain(d3.keys(data[0]).filter(function(key) { // Set the domain of the color ordinal scale to be all the csv headers except "date", matching a color to an issue
 				return key !== "date";
 			}));
