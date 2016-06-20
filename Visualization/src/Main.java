@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.function.Predicate;
 
 import org.apache.commons.lang3.StringUtils;
 import org.bson.types.ObjectId;
@@ -35,7 +36,15 @@ public class Main {
 				String[] keywordsArr = str.substring(2, str.length() - 1).replace("\"", "").split(" , ");
 
 				keyWordSet = new HashSet<>(Arrays.asList(keywordsArr));
-				keyWordSet.removeIf(p -> StringUtils.isNumericSpace(p));
+				Predicate<String> IS_NUMERIC = new Predicate<String>() {
+					  @Override
+					  public boolean test(String s) {
+					    return StringUtils.isNumericSpace(s);
+					  }
+					};
+
+					keyWordSet.removeIf(IS_NUMERIC);
+				
 
 				wm1 = new WordMatrix(start_date, end_date, keyWordSet);
 			}

@@ -104,8 +104,13 @@ public class WordMatrix {
 		TreeSet<String> sortedKeywords = sortByFrequency();
 		bw.write("date\t");
 		for (int i = 0 ; i < k ; i++){
-			keywordsToK.add(sortedKeywords.first());
-			bw.write(sortedKeywords.pollFirst() + "\t");
+			String key = sortedKeywords.pollFirst();
+			keywordsToK.add(key);
+			
+			if(keywordsToK.size()!=k)
+				bw.write(key + "\t");
+			else
+				bw.write(key);
 		}
 		bw.newLine();
 		

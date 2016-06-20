@@ -150,26 +150,28 @@ body {
 .title {
 	font-family: 'Raleway', Helvetica, Arial, sans-serif;
 	line-height: 70px;
-/* 	font-weight: bold; */
+	/* 	font-weight: bold; */
 	text-align: center;
-    font-size: 35px
+	font-size: 35px
 }
 </style>
 </head>
 <body>
 	<div class="container">
 
-		<input type="submit" value="Episode 1" class="sun-flower-button">
+		<input type="submit" value="Episode 1" class="sun-flower-button"
+			id="e1"> <input type="submit" value="Episode 2"
+			class="peter-river-flat-button" id="e2"> <input type="submit"
+			value="Episode 3" class="nephritis-flat-button" id="e3">
 
-		<input type="submit" value="Episode 2" class="peter-river-flat-button">
-
-		<input type="submit" value="Episode 3" class="nephritis-flat-button">
-
-		<div class="title">Event's
-			Keywords Appearances During Episode Time</div>
+		<div class="title">Event's Keywords Appearances During Episode
+			Time</div>
 
 	</div>
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 	<script src="http://d3js.org/d3.v3.js"></script>
+	<!-- 	d3 visualization -->
 	<script>
 		var margin = {
 			top : 20,
@@ -510,5 +512,13 @@ body {
 			});
 			return d3.max(maxYValues);
 		}
+	</script>
+	<!-- define animation while switching episodes -->
+	<script type="text/javascript">
+		$("#e1").click(function() {
+			$("svg").fadeOut("slow", function() {
+				// Animation complete.
+			}).delay( 300 ).fadeIn("slow");
+		});
 	</script>
 </html>
